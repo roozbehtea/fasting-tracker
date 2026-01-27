@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Fasting Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .timer {
+            font-size: 4em;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px 0;
+            color: #667eea;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .zone-progress {
+            margin: 30px 0;
+        }
+        
+        .zone {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .zone.active {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .zone.completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .zone.pending {
+            background: #f5f5f5;
+            color: #999;
+        }
+        
+        .zone-icon {
+            font-size: 2em;
+            margin-right: 15px;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .zone-info {
+            flex: 1;
+        }
+        
+        .zone-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .zone-time {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .zone-description {
+            font-size: 0.85em;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+        }
+        
+        .profile-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .profile-item {
+            text-align: center;
+        }
+        
+        .profile-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .profile-value {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .insights {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .insights h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .insight-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .insight-item:last-child {
+            border-bottom: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .timer {
+                font-size: 3em;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>🕐 Fasting Tracker</h1>
+            <p style="color: #666;">Started: January 27, 2026 at 9:30 AM</p>
+            
+            <div class="profile-info">
+                <h3 style="margin-bottom: 10px;">Your Profile</h3>
+                <div class="profile-grid">
+                    <div class="profile-item">
+                        <div class="profile-label">Weight</div>
+                        <div class="profile-value">220 lbs</div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">Height</div>
+                        <div class="profile-value">5'5"</div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">Body Fat</div>
+                        <div class="profile-value">37%</div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">BMI</div>
+                        <div class="profile-value" id="bmi">36.6</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timer" id="timer">00:00:00</div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Hours Fasted</div>
+                    <div class="stat-value" id="hours-fasted">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Current Zone</div>
+                    <div class="stat-value" id="current-zone" style="font-size: 1.3em;">Anabolic</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Est. Calories Burned</div>
+                    <div class="stat-value" id="calories-burned">0</div>
+                </div>
+            </div>
+            
+            <div class="zone-progress">
+                <h2 style="margin-bottom: 20px; color: #667eea;">Metabolic Zones</h2>
+                
+                <div class="zone" id="zone-anabolic">
+                    <div class="zone-icon">🍽️</div>
+                    <div class="zone-info">
+                        <div class="zone-name">Anabolic (Building)</div>
+                        <div class="zone-time">0-4 hours</div>
+                        <div class="zone-description">Body is digesting and storing energy from your meal</div>
+                    </div>
+                </div>
+                
+                <div class="zone" id="zone-catabolic">
+                    <div class="zone-icon">⚡</div>
+                    <div class="zone-info">
+                        <div class="zone-name">Catabolic (Breakdown)</div>
+                        <div class="zone-time">4-12 hours</div>
+                        <div class="zone-description">Glycogen stores being depleted, insulin levels dropping</div>
+                    </div>
+                </div>
+                
+                <div class="zone" id="zone-fatburn">
+                    <div class="zone-icon">🔥</div>
+                    <div class="zone-info">
+                        <div class="zone-name">Fat Burning</div>
+                        <div class="zone-time">12-16 hours</div>
+                        <div class="zone-description">Body shifts to burning fat for fuel, ketone production begins</div>
+                    </div>
+                </div>
+                
+                <div class="zone" id="zone-ketosis">
+                    <div class="zone-icon">⚗️</div>
+                    <div class="zone-info">
+                        <div class="zone-name">Ketosis</div>
+                        <div class="zone-time">16-24 hours</div>
+                        <div class="zone-description">Significant ketone production, enhanced mental clarity</div>
+                    </div>
+                </div>
+                
+                <div class="zone" id="zone-deep">
+                    <div class="zone-icon">🧬</div>
+                    <div class="zone-info">
+                        <div class="zone-name">Deep Ketosis & Autophagy</div>
+                        <div class="zone-time">24+ hours</div>
+                        <div class="zone-description">Cellular cleanup intensifies, autophagy peaks, HGH increases</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="insights">
+                <h3>💡 Real-Time Insights</h3>
+                <div id="insights-content">
+                    <div class="insight-item">
+                        <strong>Current Status:</strong> <span id="insight-status">Your body is in the early digestion phase. Give it 4-6 hours before glycogen depletion begins.</span>
+                    </div>
+                    <div class="insight-item">
+                        <strong>With your body composition:</strong> <span id="insight-composition">You have approximately 81 lbs of fat mass (~300,000 calories) available for fuel during extended fasts.</span>
+                    </div>
+                    <div class="insight-item">
+                        <strong>Recommendation:</strong> <span id="insight-recommendation">Stay hydrated. Consider black coffee or green tea after 6 hours to help with appetite suppression.</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-secondary" onclick="addNote()">📝 Add Note</button>
+                <button class="btn-primary" onclick="adjustGoal()">🎯 Set Goal</button>
+                <button class="btn-danger" onclick="endFast()">🍴 End Fast</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Fast start time: January 27, 2026 at 9:30 AM
+        const fastStartTime = new Date('2026-01-27T09:30:00');
+        
+        // User profile
+        const userProfile = {
+            weight: 220, // lbs
+            height: 65, // inches (5'5")
+            bodyFat: 0.37,
+            fatMass: 220 * 0.37,
+            leanMass: 220 * 0.63,
+            bmr: null
+        };
+        
+        // Calculate BMR (Mifflin-St Jeor for males, adjust if needed)
+        userProfile.bmr = (10 * (userProfile.weight / 2.205)) + (6.25 * (userProfile.height * 2.54)) - (5 * 35) + 5;
+        
+        function updateTimer() {
+            const now = new Date();
+            const elapsed = now - fastStartTime;
+            
+            const hours = Math.floor(elapsed / (1000 * 60 * 60));
+            const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+            
+            document.getElementById('timer').textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            document.getElementById('hours-fasted').textContent = hours;
+            
+            // Update calorie burn (approximate)
+            const caloriesBurned = Math.round((userProfile.bmr / 24) * (hours + minutes/60));
+            document.getElementById('calories-burned').textContent = caloriesBurned;
+            
+            // Update zones
+            updateZones(hours + minutes/60);
+            
+            // Update insights
+            updateInsights(hours + minutes/60);
+        }
+        
+        function updateZones(totalHours) {
+            const zones = [
+                { id: 'zone-anabolic', start: 0, end: 4, name: 'Anabolic' },
+                { id: 'zone-catabolic', start: 4, end: 12, name: 'Catabolic' },
+                { id: 'zone-fatburn', start: 12, end: 16, name: 'Fat Burning' },
+                { id: 'zone-ketosis', start: 16, end: 24, name: 'Ketosis' },
+                { id: 'zone-deep', start: 24, end: Infinity, name: 'Deep Ketosis' }
+            ];
+            
+            let currentZoneName = 'Anabolic';
+            
+            zones.forEach(zone => {
+                const element = document.getElementById(zone.id);
+                element.classList.remove('active', 'completed', 'pending');
+                
+                if (totalHours >= zone.start && totalHours < zone.end) {
+                    element.classList.add('active');
+                    currentZoneName = zone.name;
+                } else if (totalHours >= zone.end) {
+                    element.classList.add('completed');
+                } else {
+                    element.classList.add('pending');
+                }
+            });
+            
+            document.getElementById('current-zone').textContent = currentZoneName;
+        }
+        
+        function updateInsights(totalHours) {
+            let status = '';
+            let recommendation = '';
+            
+            if (totalHours < 4) {
+                status = 'Your body is in the early digestion phase. Insulin is elevated as nutrients are being absorbed.';
+                recommendation = 'Stay hydrated with water. Your body is still processing the oatmeal and ghee from breakfast.';
+            } else if (totalHours < 12) {
+                status = 'Blood sugar and insulin levels are dropping. Your body is beginning to shift from glucose to stored glycogen.';
+                recommendation = 'Light hunger is normal. Black coffee, tea, or sparkling water can help. Gentle movement like walking aids fat mobilization.';
+            } else if (totalHours < 16) {
+                status = 'Glycogen stores are depleted. Your body is actively burning fat and producing ketones for fuel.';
+                recommendation = 'Mental clarity may increase. Consider light exercise. Stay hydrated and supplement electrolytes if needed.';
+            } else if (totalHours < 24) {
+                status = 'You\'re in ketosis! Ketone bodies are your primary fuel. Autophagy (cellular cleanup) is ramping up.';
+                recommendation = 'Peak fat burning zone. Mental focus should be excellent. Monitor energy levels and break fast if feeling weak.';
+            } else {
+                status = 'Deep ketosis achieved. Autophagy is at its peak. Growth hormone levels significantly elevated.';
+                recommendation = 'Impressive! You\'re getting maximum cellular benefits. Consider your goals and energy - extended fasts beyond 24h should be done with care.';
+            }
+            
+            document.getElementById('insight-status').textContent = status;
+            document.getElementById('insight-recommendation').textContent = recommendation;
+            
+            // Body composition insight
+            const fatMass = userProfile.fatMass;
+            const totalEnergyAvailable = Math.round(fatMass * 3500); // ~3500 cal per lb of fat
+            document.getElementById('insight-composition').textContent = 
+                `You have approximately ${Math.round(fatMass)} lbs of fat mass (~${(totalEnergyAvailable/1000).toFixed(0)}k calories) available for fuel. Your body is well-equipped for extended fasting.`;
+        }
+        
+        function addNote() {
+            const note = prompt('Add a note about your fast:');
+            if (note) {
+                alert('Note saved: ' + note + '\n\n(In the full version, this would save to your tracking spreadsheet)');
+            }
+        }
+        
+        function adjustGoal() {
+            const goal = prompt('Set your fasting goal in hours:', '16');
+            if (goal) {
+                alert(`Goal set to ${goal} hours!\n\n(In the full version, this would show countdown to goal and notification when reached)`);
+            }
+        }
+        
+        function endFast() {
+            const now = new Date();
+            const elapsed = now - fastStartTime;
+            const hours = (elapsed / (1000 * 60 * 60)).toFixed(1);
+            
+            const confirm = window.confirm(`End your fast now?\n\nTotal duration: ${hours} hours\n\n(This will log the fast to your spreadsheet)`);
+            
+            if (confirm) {
+                alert(`Fast completed! ${hours} hours\n\nFast ended at ${now.toLocaleTimeString()}\n\n(In the full version, this would automatically log to your spreadsheet and show detailed stats)`);
+            }
+        }
+        
+        // Update timer every second
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+</body>
+</html>
