@@ -1,0 +1,124 @@
+# 📋 GITHUB PAGES SETUP INSTRUCTIONS
+
+Follow these simple steps to get your fasting tracker live on the web!
+
+## 🎯 Step-by-Step Guide
+
+### Step 1: Create a New Repository
+1. Go to **github.com** and log in
+2. Click the **"+"** icon in the top-right corner
+3. Select **"New repository"**
+4. Fill in the details:
+   - **Repository name**: `fasting-tracker` (or any name you prefer)
+   - **Description**: "My personal fasting tracker"
+   - **Public** (must be public for free GitHub Pages)
+   - ✅ Check **"Add a README file"** (optional, we have one)
+5. Click **"Create repository"**
+
+### Step 2: Upload Your Files
+1. In your new repository, click **"Add file"** button
+2. Select **"Upload files"**
+3. **Drag and drop** all files from this folder:
+   - `index.html` (the main tracker)
+   - `README.md` (documentation)
+   - `INSTRUCTIONS.txt` (this file - optional)
+4. Scroll down and click **"Commit changes"**
+
+### Step 3: Enable GitHub Pages
+1. Click on the **"Settings"** tab (top menu)
+2. In the left sidebar, scroll down and click **"Pages"**
+3. Under **"Source"**:
+   - Select **"Deploy from a branch"**
+   - Choose **"main"** branch
+   - Leave folder as **"/ (root)"**
+4. Click **"Save"**
+
+### Step 4: Wait for Deployment
+- GitHub will show a message: "Your site is ready to be published"
+- Wait **1-2 minutes** for the site to deploy
+- Refresh the Pages settings page
+- You'll see: **"Your site is live at https://yourusername.github.io/fasting-tracker/"**
+
+### Step 5: Access Your Tracker!
+- Click the URL or copy it to your browser
+- Bookmark it for quick access
+- Share it if you want!
+
+---
+
+## 🎉 You're Done!
+
+Your fasting tracker is now live on the internet at:
+**https://YOUR-GITHUB-USERNAME.github.io/YOUR-REPO-NAME/**
+
+For example, if your username is "john123" and repo is "fasting-tracker":
+**https://john123.github.io/fasting-tracker/**
+
+---
+
+## 💾 Your Data
+
+**IMPORTANT**: 
+- Data is saved to your **browser's localStorage**
+- This means data is **device-specific**
+- If you clear browser data, you'll lose your history
+- Use the **"Export to Excel"** button regularly to backup!
+
+---
+
+## 🔄 Updating Your Tracker
+
+If you want to update the tracker in the future:
+
+1. Go to your repository on GitHub
+2. Click on `index.html`
+3. Click the pencil icon (✏️) to edit
+4. Make your changes
+5. Scroll down and click "Commit changes"
+6. Wait 1-2 minutes and your live site will update automatically
+
+---
+
+## 🆘 Troubleshooting
+
+**Site showing 404 error?**
+- Make sure you selected "main" branch in Pages settings
+- Wait 2-3 minutes after enabling Pages
+- Check that `index.html` is in the root of your repository
+
+**Changes not appearing?**
+- Clear your browser cache (Ctrl+Shift+R or Cmd+Shift+R)
+- Wait 2-3 minutes for GitHub to rebuild the site
+- Try accessing in private/incognito window
+
+**Data not saving?**
+- Make sure you're not in private/incognito mode
+- Check browser isn't set to clear data on exit
+- Try a different browser
+
+---
+
+## 📱 Pro Tips
+
+1. **Bookmark the URL** on all your devices
+2. **Pin the tab** in your browser for quick access
+3. **Export to Excel weekly** for backups
+4. **Use on mobile** - it's fully responsive!
+5. **Add to home screen** on mobile for app-like experience
+
+---
+
+## 🌟 Next Steps
+
+- Start your first fast!
+- Explore all four tabs (Current Fast, History, Statistics, Profile)
+- Update your profile with accurate weight/body fat
+- Set your fasting goals
+- Track your progress over time
+
+---
+
+**Questions or Issues?**
+Check the README.md file for more detailed information!
+
+Happy Fasting! 🎯
