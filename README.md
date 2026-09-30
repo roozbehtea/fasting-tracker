@@ -1,6 +1,8 @@
 [README.md](https://github.com/user-attachments/files/24894102/README.md)
 # 🕐 Advanced Fasting Tracker
 
+> Also in this repo: **[Campaign Forge](dnd/)**, a D&D campaign builder. See [`dnd/README.md`](dnd/README.md).
+
 A comprehensive, integrated fasting tracker with automatic data logging, real-time metabolic zone tracking, and detailed statistics.
 
 ## 🚀 Quick Setup on GitHub Pages
